@@ -2,7 +2,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/yourusername/Playlistify)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/patrick-paul/Playlistify)
 
 > **Stop wasting time with broken tools and paid services.** Download entire YouTube playlists with one command - completely free and automatic.
 
@@ -41,7 +41,7 @@ You want to download a YouTube playlist. Simple, right? **Wrong.**
 
 1. **Clone or download this repository:**
    ```bash
-   git clone https://github.com/yourusername/Playlistify.git
+   git clone https://github.com/patrick-paul/Playlistify.git
    cd Playlistify
    ```
 
@@ -184,13 +184,13 @@ The script automatically adds delays between downloads. If this persists:
 Contributions are welcome! Here's how you can help:
 
 ### Reporting Issues
-Found a bug? [Open an issue](https://github.com/yourusername/Playlistify/issues) with:
+Found a bug? [Open an issue](https://github.com/patrick-paul/Playlistify/issues) with:
 - Your operating system and Python version
 - The full error message
 - Steps to reproduce the problem
 
 ### Suggesting Features
-Have an idea? [Open an issue](https://github.com/yourusername/Playlistify/issues) with:
+Have an idea? [Open an issue](https://github.com/patrick-paul/Playlistify/issues) with:
 - Description of the feature
 - Why it would be useful
 - How it might work
@@ -250,8 +250,8 @@ If this saved you time, give it a ⭐ and share it with others!
 ## 📬 Contact
 
 Questions? Suggestions? Found a bug?
-- Open an issue: [GitHub Issues](https://github.com/yourusername/Playlistify/issues)
-- Discussions: [GitHub Discussions](https://github.com/yourusername/Playlistify/discussions)
+- Open an issue: [GitHub Issues](https://github.com/patrick-paul/Playlistify/issues)
+- Discussions: [GitHub Discussions](https://github.com/patrick-paul/Playlistify/discussions)
 
 ---
 
