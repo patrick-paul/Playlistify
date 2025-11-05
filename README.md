@@ -173,11 +173,20 @@ ffmpeg is not installed or not in PATH. Run the script again and choose to insta
 ### "WARNING: nsig extraction failed"
 This is normal. YouTube is making it harder to download, but yt-dlp handles it. Videos will still download successfully.
 
-### "Rate limited by YouTube"
-The script automatically adds delays between downloads. If this persists:
+### "Rate limited by YouTube" / "Sign in to confirm you're not a bot" (HTTP 429)
+**This is the most common issue!** YouTube is blocking automated downloads. Here's how to fix it:
+
+**SOLUTION: Use Browser Cookies** (New Feature!)
+The script now supports using cookies from your browser to bypass bot detection:
+1. Make sure you're **logged into YouTube** in your browser (Chrome, Firefox, Edge, etc.)
+2. Run the script - it will ask you to select your browser
+3. The script will automatically use your login session
+
+If this doesn't work:
 - Wait a few hours before trying again
 - Use a VPN to change your IP address
 - Update yt-dlp: `pip install --upgrade yt-dlp`
+- See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for advanced solutions
 
 ## 🤝 Contributing
 

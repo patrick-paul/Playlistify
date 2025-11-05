@@ -561,7 +561,7 @@ def get_playlist_info(playlist_url):
         print(f"{ERROR} Error parsing playlist data: {e}")
         return None
 
-def download_single_video(video_url, output_dir='downloads', quality='best', max_retries=3):
+def download_single_video(video_url, output_dir='downloads', quality='best', max_retries=3, use_cookies=None):
     """
     Download a single video with progress bar and retry logic
     """
@@ -584,8 +584,27 @@ def download_single_video(video_url, output_dir='downloads', quality='best', max
         '-o', f'{output_dir}/%(title)s.%(ext)s',
         '--newline',
         '--progress',
-        video_url
     ]
+    
+    if use_cookies:
+        if use_cookies == 'chrome':
+            cmd.extend(['--cookies-from-browser', 'chrome'])
+        elif use_cookies == 'firefox':
+            cmd.extend(['--cookies-from-browser', 'firefox'])
+        elif use_cookies == 'edge':
+            cmd.extend(['--cookies-from-browser', 'edge'])
+        elif use_cookies == 'brave':
+            cmd.extend(['--cookies-from-browser', 'brave'])
+        elif use_cookies == 'opera':
+            cmd.extend(['--cookies-from-browser', 'opera'])
+    else:
+        cmd.extend([
+            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            '--extractor-args', 'youtube:player_client=android,web',
+            '--no-check-certificate',
+        ])
+    
+    cmd.append(video_url)
     
     for attempt in range(1, max_retries + 1):
         try:
@@ -636,7 +655,7 @@ def download_single_video(video_url, output_dir='downloads', quality='best', max
     
     return False
 
-def download_video_worker(video_info, output_dir, quality, max_retries=3):
+def download_video_worker(video_info, output_dir, quality, max_retries=3, use_cookies=None):
     """Worker function for parallel downloads"""
     video_url = video_info['url']
     video_title = video_info['title']
@@ -664,8 +683,28 @@ def download_video_worker(video_info, output_dir, quality, max_retries=3):
         '-o', output_template,
         '--no-progress',
         '--restrict-filenames',
-        video_url
     ]
+    
+    # Add cookie options to bypass bot detection
+    if use_cookies:
+        if use_cookies == 'chrome':
+            cmd.extend(['--cookies-from-browser', 'chrome'])
+        elif use_cookies == 'firefox':
+            cmd.extend(['--cookies-from-browser', 'firefox'])
+        elif use_cookies == 'edge':
+            cmd.extend(['--cookies-from-browser', 'edge'])
+        elif use_cookies == 'brave':
+            cmd.extend(['--cookies-from-browser', 'brave'])
+        elif use_cookies == 'opera':
+            cmd.extend(['--cookies-from-browser', 'opera'])
+    else:
+        cmd.extend([
+            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            '--extractor-args', 'youtube:player_client=android,web',
+            '--no-check-certificate',
+        ])
+    
+    cmd.append(video_url)
     
     for attempt in range(1, max_retries + 1):
         try:
@@ -696,7 +735,7 @@ def download_video_worker(video_info, output_dir, quality, max_retries=3):
     return {'success': False, 'title': video_title, 'index': video_index}
 
 def download_playlist_parallel(playlist_url, output_dir='downloads', quality='best', 
-                               max_workers=3, video_range=None):
+                               max_workers=3, video_range=None, use_cookies=None):
     """
     Download playlist videos in parallel
     """
@@ -731,7 +770,7 @@ def download_playlist_parallel(playlist_url, output_dir='downloads', quality='be
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_video = {
-            executor.submit(download_video_worker, video, output_dir, quality): video 
+            executor.submit(download_video_worker, video, output_dir, quality, max_retries, use_cookies): video 
             for video in videos
         }
         
@@ -765,7 +804,7 @@ def download_playlist_parallel(playlist_url, output_dir='downloads', quality='be
     
     return True
 
-def download_playlist(playlist_url, output_dir='downloads', quality='best'):
+def download_playlist(playlist_url, output_dir='downloads', quality='best', use_cookies=None):
     """
     Download all videos from a playlist (sequential with progress)
     """
@@ -795,8 +834,28 @@ def download_playlist(playlist_url, output_dir='downloads', quality='best'):
         '--continue',
         '--newline',
         '--restrict-filenames',
-        playlist_url
     ]
+    
+    # Add cookie options to bypass bot detection
+    if use_cookies:
+        if use_cookies == 'chrome':
+            cmd.extend(['--cookies-from-browser', 'chrome'])
+        elif use_cookies == 'firefox':
+            cmd.extend(['--cookies-from-browser', 'firefox'])
+        elif use_cookies == 'edge':
+            cmd.extend(['--cookies-from-browser', 'edge'])
+        elif use_cookies == 'brave':
+            cmd.extend(['--cookies-from-browser', 'brave'])
+        elif use_cookies == 'opera':
+            cmd.extend(['--cookies-from-browser', 'opera'])
+    else:
+        cmd.extend([
+            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            '--extractor-args', 'youtube:player_client=android,web',
+            '--no-check-certificate',
+        ])
+    
+    cmd.append(playlist_url)
     
     try:
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -1047,10 +1106,35 @@ def main():
         if not output_dir:
             output_dir = 'downloads'
         
+        # Ask about browser cookies for bot detection bypass
+        print(f"\n{YELLOW}If you're getting bot detection errors, use browser cookies:")
+        print(f"{CYAN}  1. Chrome")
+        print(f"{CYAN}  2. Firefox")
+        print(f"{CYAN}  3. Edge")
+        print(f"{CYAN}  4. Brave")
+        print(f"{CYAN}  5. Opera")
+        print(f"{CYAN}  6. None (try without cookies)")
+        
+        browser_choice = input(f"\n{INFO}Select browser (1-6, press Enter for Chrome): {RESET}").strip()
+        browser_map = {
+            '1': 'chrome',
+            '2': 'firefox',
+            '3': 'edge',
+            '4': 'brave',
+            '5': 'opera',
+            '6': None,
+            '': 'chrome'
+        }
+        use_cookies = browser_map.get(browser_choice, 'chrome')
+        
         print(f"\n{SUCCESS} Video will be saved to: {Path(output_dir).absolute()}")
+        if use_cookies:
+            print(f"{INFO} Using cookies from: {use_cookies.upper()}")
+            print(f"{YELLOW}Note: Make sure you're logged into YouTube in {use_cookies.capitalize()}")
+        
         # Allow downloading multiple single videos without quitting
         while True:
-            success = download_single_video(url, output_dir, quality)
+            success = download_single_video(url, output_dir, quality, use_cookies=use_cookies)
             if success:
                 choice = input(f"\n{INFO} Downloaded successfully. Download another URL? (y/n): {RESET}").strip().lower()
             else:
