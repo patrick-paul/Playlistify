@@ -127,3 +127,6 @@ test_output/
 # Package files
 *.tar.gz
 *.whl
+
+# Claude
+.claude
