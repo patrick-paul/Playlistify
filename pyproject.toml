@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "playlistfy"
 version = "2.0.0"
 authors = [
-    { name="Patrick Paul", email="author@example.com" },
+    { name="Patrick Paul", email="patrickpaul367@gmail.com" },
 ]
 description = "A beautiful CLI tool for downloading YouTube videos and playlists"
 readme = "README.md"
